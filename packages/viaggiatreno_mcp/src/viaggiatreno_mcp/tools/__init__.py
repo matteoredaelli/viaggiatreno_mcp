@@ -1,8 +1,8 @@
 """Package tools per ViaggiaTreno MCP."""
 
 from fastmcp import FastMCP
+from viaggiatreno import ViaggiaTrenoClient
 
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
 from viaggiatreno_mcp.tools.departures_arrivals import register_departure_arrival_tools
 from viaggiatreno_mcp.tools.routes import register_route_tools
 from viaggiatreno_mcp.tools.service import register_service_tools

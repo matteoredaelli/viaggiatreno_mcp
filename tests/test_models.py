@@ -3,16 +3,19 @@
 
 """Test unitari per la validazione dei modelli Pydantic sui campioni reali."""
 
-from tests.conftest import load_sample_json
-from viaggiatreno_mcp.models.route import DettaglioTratta, TrattaSegment
-from viaggiatreno_mcp.models.service import Statistics
-from viaggiatreno_mcp.models.station import StationDetail, StationSearchResult
-from viaggiatreno_mcp.models.train import (
+from viaggiatreno import (
+    DettaglioTratta,
+    StationDetail,
+    StationSearchResult,
+    Statistics,
     TrainBoardItem,
     TrainSearchResult,
     TrainStatus,
     TrattaCanvasItem,
+    TrattaSegment,
 )
+
+from tests.conftest import load_sample_json
 
 
 def test_station_search_result_model():

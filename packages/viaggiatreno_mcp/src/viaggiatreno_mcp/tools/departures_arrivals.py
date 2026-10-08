@@ -1,9 +1,7 @@
 """Tool MCP per tabelloni partenze e arrivi nelle stazioni."""
 
 from fastmcp import FastMCP
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
-from viaggiatreno_mcp.models.train import TrainBoardItem
+from viaggiatreno import TrainBoardItem, ViaggiaTrenoClient
 
 
 def register_departure_arrival_tools(mcp: FastMCP, client: ViaggiaTrenoClient) -> None:

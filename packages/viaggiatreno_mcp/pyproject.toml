@@ -1,0 +1,41 @@
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "src"
+module-name = "viaggiatreno_mcp"
+
+[project]
+name = "viaggiatreno-mcp"
+version = "0.1.0"
+description = "ViaggiaTreno MCP Server for Claude and pi"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Matteo Redaelli", email = "matteo.redaelli@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "viaggiatreno>=0.1.0",
+    "fastmcp>=4.0.10",
+    "httpx>=0.28.1",
+    "pydantic>=2.13.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pyright",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[project.scripts]
+viaggiatreno-mcp = "viaggiatreno_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/matteoredaelli/pyviaggiatreno"
+Documentation = "https://github.com/matteoredaelli/pyviaggiatreno/blob/main/README.md"
+Repository = "https://github.com/matteoredaelli/pyviaggiatreno.git"
+Issues = "https://github.com/matteoredaelli/pyviaggiatreno/issues"

@@ -1,6 +1,7 @@
 """ViaggiaTreno MCP Server."""
 
-from viaggiatreno_mcp.api import ViaggiaTrenoClient
+from viaggiatreno import ViaggiaTrenoClient
+
 from viaggiatreno_mcp.server import create_server, mcp
 
 __all__ = [

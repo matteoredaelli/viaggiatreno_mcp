@@ -1,25 +1,25 @@
-"""Package models per ViaggiaTreno MCP."""
+"""Package models per la libreria ViaggiaTreno."""
 
-from viaggiatreno_mcp.models.common import (
+from viaggiatreno.models.common import (
     CLIENT_COMPANIES,
     REGIONS,
     TRAIN_STATUS_DESCRIPTIONS,
     ViaggiaTrenoBaseModel,
 )
-from viaggiatreno_mcp.models.route import DettaglioTratta, TrattaSegment
-from viaggiatreno_mcp.models.service import (
+from viaggiatreno.models.route import DettaglioTratta, TrattaSegment
+from viaggiatreno.models.service import (
     InfomobilitaNews,
     InfomobilitaNewsHeadline,
     StationWeather,
     Statistics,
 )
-from viaggiatreno_mcp.models.station import (
+from viaggiatreno.models.station import (
     StationAutocompleteItem,
     StationDetail,
     StationNTSAutocompleteItem,
     StationSearchResult,
 )
-from viaggiatreno_mcp.models.train import (
+from viaggiatreno.models.train import (
     Fermata,
     TrainAutocompleteItem,
     TrainBoardItem,

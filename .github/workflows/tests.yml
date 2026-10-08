@@ -1,0 +1,66 @@
+name: Tests & Linting
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - "packages/**"
+      - "tests/**"
+      - ".github/workflows/tests.yml"
+      - "pyproject.toml"
+  
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  lint:
+    name: Lint with Ruff
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: astral-sh/setup-uv@v2
+        with:
+          version: "0.12.x"
+      
+      - name: Lint code
+        run: |
+          uv run ruff check packages/ tests/
+          uv run ruff format --check packages/ tests/
+
+  type-check:
+    name: Type Check with Pyright
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: astral-sh/setup-uv@v2
+        with:
+          version: "0.12.x"
+      
+      - name: Type check
+        run: uv run pyright packages/
+
+  test:
+    name: Tests with Pytest
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - uses: astral-sh/setup-uv@v2
+        with:
+          version: "0.12.x"
+      
+      - name: Run tests
+        run: uv run pytest tests/ -v --tb=short

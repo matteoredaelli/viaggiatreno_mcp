@@ -1,0 +1,28 @@
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "src"
+module-name = "viaggiatreno"
+
+[project]
+name = "viaggiatreno"
+version = "0.1.0"
+description = "ViaggiaTreno API Client - Core Library"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Matteo Redaelli", email = "matteo.redaelli@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "pydantic>=2.13.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/matteoredaelli/pyviaggiatreno"
+Documentation = "https://github.com/matteoredaelli/pyviaggiatreno/blob/main/README.md"
+Repository = "https://github.com/matteoredaelli/pyviaggiatreno.git"
+Issues = "https://github.com/matteoredaelli/pyviaggiatreno/issues"

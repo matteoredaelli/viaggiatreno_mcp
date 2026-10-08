@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 import httpx
 
-from viaggiatreno_mcp.api.parsers import (
+from viaggiatreno.api.parsers import (
     parse_infomobilita_rss,
     parse_infomobilita_rss_box,
     parse_infomobilita_ticker,
@@ -16,20 +16,20 @@ from viaggiatreno_mcp.api.parsers import (
     parse_station_nts_autocomplete,
     parse_train_autocomplete,
 )
-from viaggiatreno_mcp.models.route import DettaglioTratta, TrattaSegment
-from viaggiatreno_mcp.models.service import (
+from viaggiatreno.models.route import DettaglioTratta, TrattaSegment
+from viaggiatreno.models.service import (
     InfomobilitaNews,
     InfomobilitaNewsHeadline,
     StationWeather,
     Statistics,
 )
-from viaggiatreno_mcp.models.station import (
+from viaggiatreno.models.station import (
     StationAutocompleteItem,
     StationDetail,
     StationNTSAutocompleteItem,
     StationSearchResult,
 )
-from viaggiatreno_mcp.models.train import (
+from viaggiatreno.models.train import (
     TrainAutocompleteItem,
     TrainBoardItem,
     TrainSearchResult,
@@ -107,9 +107,7 @@ class ViaggiaTrenoClient:
     # STAZIONI
     # -------------------------------------------------------------------------
 
-    async def autocompleta_stazione(
-        self, prefisso: str
-    ) -> list[StationAutocompleteItem]:
+    async def autocompleta_stazione(self, prefisso: str) -> list[StationAutocompleteItem]:
         """Suggerimenti stazioni per prefisso (GET /autocompletaStazione/{prefisso})."""
         r = await self._request(f"autocompletaStazione/{quote(prefisso)}")
         if r.status_code == 204 or not r.text.strip():
@@ -127,9 +125,7 @@ class ViaggiaTrenoClient:
         r.raise_for_status()
         return parse_station_autocomplete(r.text)
 
-    async def autocompleta_stazione_nts(
-        self, prefisso: str
-    ) -> list[StationNTSAutocompleteItem]:
+    async def autocompleta_stazione_nts(self, prefisso: str) -> list[StationNTSAutocompleteItem]:
         """Suggerimenti stazioni e posti tecnici con codice NTS RICS (GET /autocompletaStazioneNTS/{prefisso})."""
         r = await self._request(f"autocompletaStazioneNTS/{quote(prefisso)}")
         if r.status_code == 204 or not r.text.strip():
@@ -161,9 +157,7 @@ class ViaggiaTrenoClient:
         self, codice_stazione: str, codice_regione: int
     ) -> StationDetail | None:
         """Dettagli e coordinate di una stazione (GET /dettaglioStazione/{codiceStazione}/{codiceRegione})."""
-        r = await self._request(
-            f"dettaglioStazione/{quote(codice_stazione)}/{codice_regione}"
-        )
+        r = await self._request(f"dettaglioStazione/{quote(codice_stazione)}/{codice_regione}")
         if r.status_code == 204 or not r.text.strip():
             return None
         r.raise_for_status()
@@ -225,9 +219,7 @@ class ViaggiaTrenoClient:
         r.raise_for_status()
         return parse_train_autocomplete(r.text)
 
-    async def cerca_numero_treno(
-        self, numero_treno: int | str
-    ) -> TrainSearchResult | None:
+    async def cerca_numero_treno(self, numero_treno: int | str) -> TrainSearchResult | None:
         """Identificativi corsa corrente per un treno in JSON (GET /cercaNumeroTreno/{numeroTreno})."""
         r = await self._request(f"cercaNumeroTreno/{numero_treno}")
         if r.status_code == 204 or not r.text.strip():
@@ -293,9 +285,7 @@ class ViaggiaTrenoClient:
         categorie: str = "ES*,IC,EXP,EC,EN,REG",
     ) -> list[DettaglioTratta]:
         """Treni presenti su un segmento (GET /dettagliTratta/0/{trattaAB}/{trattaBA}/{categorie}/null)."""
-        r = await self._request(
-            f"dettagliTratta/0/{tratta_ab}/{tratta_ba}/{quote(categorie)}/null"
-        )
+        r = await self._request(f"dettagliTratta/0/{tratta_ab}/{tratta_ba}/{quote(categorie)}/null")
         if r.status_code == 204 or not r.text.strip():
             return []
         r.raise_for_status()
@@ -328,9 +318,7 @@ class ViaggiaTrenoClient:
             results[station_id] = StationWeather.model_validate(weather_dict)
         return results
 
-    async def infomobilita_rss(
-        self, is_info_lavori: bool = False
-    ) -> list[InfomobilitaNews]:
+    async def infomobilita_rss(self, is_info_lavori: bool = False) -> list[InfomobilitaNews]:
         """Notizie circolazione o lavori programmati (GET /infomobilitaRSS/{isInfoLavori})."""
         param = "true" if is_info_lavori else "false"
         r = await self._request(f"infomobilitaRSS/{param}")

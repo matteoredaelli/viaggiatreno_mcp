@@ -3,8 +3,8 @@
 import sys
 
 from fastmcp import FastMCP
+from viaggiatreno import ViaggiaTrenoClient
 
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
 from viaggiatreno_mcp.tools import register_all_tools
 
 

@@ -21,6 +21,7 @@ API non ufficiali e non documentate del portale [ViaggiaTreno](http://www.viaggi
 - [Treni](#treni): `cercaNumeroTrenoTrenoAutocomplete`, `cercaNumeroTreno`, `andamentoTreno`, `tratteCanvas`
 - [Tratte e rete](#tratte-e-rete): `elencoTratte`, `dettagliTratta`
 - [Informazioni di servizio](#informazioni-di-servizio): `statistiche`, `datimeteo`, `infomobilitaRSS`, `infomobilitaRSSBox`, `infomobilitaTicker`, `language`
+- [Tabelloni RFI (iechub.rfi.it)](#tabelloni-rfi-iechubrlrit): visualizzazione web real-time dei tabelloni di stazione
 - [Endpoint dismessi](#endpoint-dismessi)
 - [Tabelle di riferimento](#tabelle-di-riferimento)
 - [Insidie note](#insidie-note)
@@ -1249,6 +1250,96 @@ Dizionario di traduzione delle stringhe dell'interfaccia.
   "statistica_attuale": "Currently, {{treniCircolanti}} trains are in transit."
 }
 ```
+
+---
+
+## Tabelloni RFI (iechub.rfi.it)
+
+Servizio web gestito da RFI che mostra i treni in arrivo e partenza da una stazione nel formato dei tabelloni fisici presenti in stazione. Alternativa interattiva al polling di `partenze`/`arrivi` di ViaggiaTreno per applicazioni che hanno bisogno di visualizzazione real-time.
+
+### URL base
+
+`GET https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor`
+
+### Parametri
+
+| Parametro | Tipo | Descrizione |
+|---|---|---|
+| `Arrivals` | bool | `true` per mostrare gli arrivi, `false` per le partenze |
+| `Search` | string | Campo di ricerca della stazione (opzionale; se vuoto, viene usato `PlaceId`) |
+| `PlaceId` | int | ID della stazione nel sistema RFI (vedi tabella PlaceId sotto) |
+
+### Risposta
+
+`text/html`, pagina HTML5 con tabellone interattivo. Il rendering è aggiornato in tempo reale via JavaScript/AJAX/WebSocket. Contiene:
+
+- Numero del treno
+- Orario programmato e effettivo (con evidenziazione ritardo)
+- Destinazione (partenze) o origine (arrivi)
+- Binario programmato e effettivo
+- Stato del treno (in orario, in ritardo, cancellato, ecc.)
+- Categoria (Freccia, IC, EC, REG, ecc.)
+
+### Esempi
+
+**Partenze da Milano Centrale:**
+```
+https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?Arrivals=False&Search=&PlaceId=1728
+```
+
+**Arrivi a Milano Centrale:**
+```
+https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor?Arrivals=True&Search=&PlaceId=1728
+```
+
+### PlaceId comuni
+
+| PlaceId | Stazione | Codice ViaggiaTreno | Regione |
+|---|---|---|---|
+| 1728 | Milano Centrale | S01700 | Lombardia |
+| 1714 | Milano Porta Garibaldi | S01701 | Lombardia |
+| 1813 | Torino Porta Nuova | S00219 | Piemonte |
+| 1840 | Firenze Santa Maria Novella | S06421 | Toscana |
+| 1925 | Roma Termini | S08000 | Lazio |
+| 2104 | Napoli Centrale | S09218 | Campania |
+
+**Nota**: questa tabella è **incompleta**. Per trovare il PlaceId di una stazione:
+1. Andare su https://iechub.rfi.it/ArriviPartenze/ArrivalsDepartures/Monitor
+2. Cercare la stazione nel campo `Search`
+3. Cliccare sul risultato
+4. Il `PlaceId` è visibile nell'URL della pagina risultante
+
+### Vantaggi vs ViaggiaTreno API
+
+- **Visualizzazione nativa**: replica esattamente i tabelloni di stazione
+- **Real-time**: aggiornamenti automatici senza polling manuale
+- **Dati arrotondati**: i ritardi sono visibili immediatamente
+- **Interfaccia familiare**: gli utenti riconoscono il formato
+
+### Svantaggi
+
+- **Non è una API JSON**: il dato è HTML/JavaScript, richiede parsing
+- **Rate limiting non documentato**: usare con moderazione
+- **Meno dettagli**: non fornisce il percorso completo del treno (tutte le fermate)
+- **PlaceId diverso da codice ViaggiaTreno**: mapping non ovvio
+
+### Confronto con `partenze`/`arrivi` di ViaggiaTreno
+
+| Aspetto | iechub.rfi.it | ViaggiaTreno API |
+|---|---|---|
+| Formato | HTML5 interattivo | JSON strutturato |
+| Fermate complete | No | Sì (`andamentoTreno`) |
+| Parsing | Richiede browser/scraper | Facile |
+| Dati programmatici | Difficili | Facili |
+| Aggiornamento | Real-time (browser) | Manuale (polling) |
+| Uso consigliato | Visualizzazione web | Integrazione programmatica |
+
+### Note
+
+- I PlaceId di RFI **non corrispondono** ai codici `S*` di ViaggiaTreno; è necessario un mapping esplicito.
+- Il servizio è ospitato su infrastruttura RFI ed è ufficiale; non è una API non documentata come ViaggiaTreno.
+- Per scraping massivo, contattare RFI direttamente anziché fare scraping del sito.
+- Se l'applicazione ha bisogno di dati strutturati e dell'intero percorso del treno, usare le API ViaggiaTreno (`andamentoTreno` + `partenze`/`arrivi`).
 
 ---
 

@@ -1,13 +1,12 @@
 """Tool MCP per lo stato, la ricerca e l'itinerario dei treni."""
 
 from fastmcp import FastMCP
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
-from viaggiatreno_mcp.models.train import (
+from viaggiatreno import (
     TrainAutocompleteItem,
     TrainSearchResult,
     TrainStatus,
     TrattaCanvasItem,
+    ViaggiaTrenoClient,
 )
 
 

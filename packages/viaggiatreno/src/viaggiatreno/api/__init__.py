@@ -1,7 +1,7 @@
-"""Package API per ViaggiaTreno MCP."""
+"""Package API per la libreria ViaggiaTreno."""
 
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient, format_viaggiatreno_datetime
-from viaggiatreno_mcp.api.parsers import (
+from viaggiatreno.api.client import ViaggiaTrenoClient, format_viaggiatreno_datetime
+from viaggiatreno.api.parsers import (
     parse_infomobilita_rss,
     parse_infomobilita_rss_box,
     parse_infomobilita_ticker,

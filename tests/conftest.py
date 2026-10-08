@@ -9,8 +9,7 @@ from typing import Any
 
 import httpx
 import pytest
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
+from viaggiatreno import ViaggiaTrenoClient
 from viaggiatreno_mcp.server import create_server
 
 SAMPLES_DIR = Path(__file__).parent.parent / "samples"
@@ -20,9 +19,7 @@ def load_sample_content(name: str) -> str:
     """Carica il corpo effettivo di un file di test in samples/, ignorando le righe di commento."""
     matches = list(SAMPLES_DIR.glob(f"{name}.*"))
     if not matches:
-        raise FileNotFoundError(
-            f"Nessun file trovato per sample {name} in {SAMPLES_DIR}"
-        )
+        raise FileNotFoundError(f"Nessun file trovato per sample {name} in {SAMPLES_DIR}")
     lines = matches[0].read_text(encoding="utf-8").splitlines()
     body_lines = [l for l in lines if not l.startswith("#")]
     return "\n".join(body_lines).strip()
@@ -39,9 +36,7 @@ def make_mock_transport() -> httpx.MockTransport:
     def handler(request: httpx.Request) -> httpx.Response:
         path = request.url.path
         if "autocompletaStazioneNTS" in path:
-            return httpx.Response(
-                200, text=load_sample_content("autocompletaStazioneNTS")
-            )
+            return httpx.Response(200, text=load_sample_content("autocompletaStazioneNTS"))
         elif "autocompletaStazioneImpostaViaggio" in path:
             return httpx.Response(
                 200, text=load_sample_content("autocompletaStazioneImpostaViaggio")

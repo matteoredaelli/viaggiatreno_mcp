@@ -1,9 +1,7 @@
 """Tool MCP per le tratte ferroviarie e il monitoraggio della rete."""
 
 from fastmcp import FastMCP
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
-from viaggiatreno_mcp.models.route import DettaglioTratta, TrattaSegment
+from viaggiatreno import DettaglioTratta, TrattaSegment, ViaggiaTrenoClient
 
 
 def register_route_tools(mcp: FastMCP, client: ViaggiaTrenoClient) -> None:

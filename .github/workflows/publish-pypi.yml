@@ -1,0 +1,107 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - "v*"  # e.g. v0.1.0
+
+  # Allow manual triggering for testing
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (without 'v' prefix)"
+        required: true
+        type: string
+
+jobs:
+  build-and-publish:
+    name: Build and Publish Packages
+    runs-on: ubuntu-latest
+    
+    # Optional: Add environment for approval before publishing
+    # environment: pypi
+    
+    strategy:
+      matrix:
+        package:
+          - packages/viaggiatreno
+          - packages/viaggiatreno_mcp
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for version detection
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+        with:
+          version: "0.12.x"
+      
+      - name: Build ${{ matrix.package }}
+        run: |
+          cd ${{ matrix.package }}
+          uv build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.package }}
+          path: ${{ matrix.package }}/dist/
+          retention-days: 1
+
+  publish:
+    name: Publish to PyPI
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    
+    # Optional: Add environment for approval
+    # environment: pypi
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+        with:
+          version: "0.12.x"
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+      
+      - name: Organize dist directory
+        run: |
+          # Flatten dist structure
+          find dist -name "*.whl" -o -name "*.tar.gz" | while read f; do
+            mv "$f" dist/ 2>/dev/null || true
+          done
+          
+          # List what we're publishing
+          echo "Files to publish:"
+          ls -lh dist/
+      
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
+          packages-dir: dist
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: ${{ contains(github.ref, 'rc') || contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

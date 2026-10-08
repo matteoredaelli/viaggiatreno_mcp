@@ -18,9 +18,7 @@ async def test_tools_stations(mock_server: FastMCP):
     assert not res.is_error
 
     # Dettaglio stazione con auto-recupero regione
-    res = await mock_server.call_tool(
-        "dettaglio_stazione", {"codice_stazione": "S01700"}
-    )
+    res = await mock_server.call_tool("dettaglio_stazione", {"codice_stazione": "S01700"})
     assert not res.is_error
 
     # Elenco stazioni
@@ -28,28 +26,20 @@ async def test_tools_stations(mock_server: FastMCP):
     assert not res.is_error
 
     # Codice regione
-    res = await mock_server.call_tool(
-        "codice_regione_stazione", {"codice_stazione": "S01700"}
-    )
+    res = await mock_server.call_tool("codice_regione_stazione", {"codice_stazione": "S01700"})
     assert not res.is_error
 
     # Autocompleta NTS
-    res = await mock_server.call_tool(
-        "autocompleta_stazione_nts", {"prefisso": "firenze"}
-    )
+    res = await mock_server.call_tool("autocompleta_stazione_nts", {"prefisso": "firenze"})
     assert not res.is_error
 
 
 @pytest.mark.asyncio
 async def test_tools_departures_arrivals(mock_server: FastMCP):
-    partenze = await mock_server.call_tool(
-        "tabellone_partenze", {"codice_stazione": "S01700"}
-    )
+    partenze = await mock_server.call_tool("tabellone_partenze", {"codice_stazione": "S01700"})
     assert not partenze.is_error
 
-    arrivi = await mock_server.call_tool(
-        "tabellone_arrivi", {"codice_stazione": "S01700"}
-    )
+    arrivi = await mock_server.call_tool("tabellone_arrivi", {"codice_stazione": "S01700"})
     assert not arrivi.is_error
 
 
@@ -92,9 +82,7 @@ async def test_tools_service(mock_server: FastMCP):
     stats = await mock_server.call_tool("statistiche_servizio", {})
     assert not stats.is_error
 
-    notizie = await mock_server.call_tool(
-        "notizie_infomobilita", {"solo_lavori": False}
-    )
+    notizie = await mock_server.call_tool("notizie_infomobilita", {"solo_lavori": False})
     assert not notizie.is_error
 
     titoli = await mock_server.call_tool("titoli_infomobilita", {"solo_lavori": False})

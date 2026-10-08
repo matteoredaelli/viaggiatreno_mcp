@@ -2,8 +2,8 @@
 
 from pydantic import Field
 
-from viaggiatreno_mcp.models.common import ViaggiaTrenoBaseModel
-from viaggiatreno_mcp.models.train import TrainBoardItem
+from viaggiatreno.models.common import ViaggiaTrenoBaseModel
+from viaggiatreno.models.train import TrainBoardItem
 
 
 class TrattaSegment(ViaggiaTrenoBaseModel):
@@ -23,9 +23,7 @@ class TrattaSegment(ViaggiaTrenoBaseModel):
     longitudineA: float | None = Field(None, description="Longitudine dell'estremo A")
     latitudineB: float | None = Field(None, description="Latitudine dell'estremo B")
     longitudineB: float | None = Field(None, description="Longitudine dell'estremo B")
-    occupata: bool = Field(
-        ..., description="True se almeno un treno è presente su questo segmento"
-    )
+    occupata: bool = Field(..., description="True se almeno un treno è presente su questo segmento")
 
 
 class DettaglioTratta(ViaggiaTrenoBaseModel):

@@ -3,8 +3,7 @@
 
 """Test unitari per i parser di testo e HTML di ViaggiaTreno."""
 
-from tests.conftest import load_sample_content
-from viaggiatreno_mcp.api.parsers import (
+from viaggiatreno import (
     parse_infomobilita_rss,
     parse_infomobilita_rss_box,
     parse_infomobilita_ticker,
@@ -12,6 +11,8 @@ from viaggiatreno_mcp.api.parsers import (
     parse_station_nts_autocomplete,
     parse_train_autocomplete,
 )
+
+from tests.conftest import load_sample_content
 
 
 def test_parse_station_autocomplete():

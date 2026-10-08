@@ -1,13 +1,12 @@
 """Tool MCP per informazioni di servizio: statistiche, infomobilità, meteo e dizionario lingue."""
 
 from fastmcp import FastMCP
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
-from viaggiatreno_mcp.models.service import (
+from viaggiatreno import (
     InfomobilitaNews,
     InfomobilitaNewsHeadline,
     StationWeather,
     Statistics,
+    ViaggiaTrenoClient,
 )
 
 

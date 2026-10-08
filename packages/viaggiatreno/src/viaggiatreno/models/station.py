@@ -4,15 +4,13 @@ from typing import Any
 
 from pydantic import Field
 
-from viaggiatreno_mcp.models.common import REGIONS, ViaggiaTrenoBaseModel
+from viaggiatreno.models.common import REGIONS, ViaggiaTrenoBaseModel
 
 
 class StationAutocompleteItem(ViaggiaTrenoBaseModel):
     """Elemento restituito dall'autocompletamento delle stazioni (formato NOME|CODICE)."""
 
-    nome: str = Field(
-        ..., description="Nome della stazione (es. FIRENZE SANTA MARIA NOVELLA)"
-    )
+    nome: str = Field(..., description="Nome della stazione (es. FIRENZE SANTA MARIA NOVELLA)")
     codice: str = Field(..., description="Codice stazione ViaggiaTreno (es. S06421)")
 
 
@@ -20,9 +18,7 @@ class StationNTSAutocompleteItem(ViaggiaTrenoBaseModel):
     """Elemento restituito dall'autocompletamento tecnico NTS con codice RICS."""
 
     nome: str = Field(..., description="Nome della località o stazione tecnica")
-    codice_nts: str = Field(
-        ..., description="Codice numerico RICS a 9-11 cifre (es. 830006900)"
-    )
+    codice_nts: str = Field(..., description="Codice numerico RICS a 9-11 cifre (es. 830006900)")
 
 
 class StationSearchResult(ViaggiaTrenoBaseModel):
@@ -46,9 +42,7 @@ class StationDetail(ViaggiaTrenoBaseModel):
     tipoStazione: int | None = Field(
         None, description="Tipo stazione (1 principale, 3 regolare, ecc.)"
     )
-    localita: StationSearchResult | None = Field(
-        None, description="Dati anagrafici località"
-    )
+    localita: StationSearchResult | None = Field(None, description="Dati anagrafici località")
     key: str | None = Field(None, description="Chiave composita codice_regione")
     esterno: bool | None = Field(None, description="Flag stazione esterna")
     dettZoomStaz: list[dict[str, Any]] | None = Field(

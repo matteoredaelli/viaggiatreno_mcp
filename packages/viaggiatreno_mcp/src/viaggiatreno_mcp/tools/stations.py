@@ -1,13 +1,12 @@
 """Tool MCP per la gestione e ricerca delle stazioni ferroviarie."""
 
 from fastmcp import FastMCP
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
-from viaggiatreno_mcp.models.station import (
+from viaggiatreno import (
     StationAutocompleteItem,
     StationDetail,
     StationNTSAutocompleteItem,
     StationSearchResult,
+    ViaggiaTrenoClient,
 )
 
 

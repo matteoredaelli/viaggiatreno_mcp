@@ -5,15 +5,15 @@ import re
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
-from viaggiatreno_mcp.models.service import (
+from viaggiatreno.models.service import (
     InfomobilitaNews,
     InfomobilitaNewsHeadline,
 )
-from viaggiatreno_mcp.models.station import (
+from viaggiatreno.models.station import (
     StationAutocompleteItem,
     StationNTSAutocompleteItem,
 )
-from viaggiatreno_mcp.models.train import TrainAutocompleteItem
+from viaggiatreno.models.train import TrainAutocompleteItem
 
 
 def parse_station_autocomplete(text: str) -> list[StationAutocompleteItem]:
@@ -136,9 +136,7 @@ def parse_infomobilita_rss(html_text: str) -> list[InfomobilitaNews]:
         in_evidenza = "inEvidenza" in a_class
 
         # Data da <h4>
-        h4_match = re.search(
-            r"<h4[^>]*>(.*?)</h4>", li_content, re.DOTALL | re.IGNORECASE
-        )
+        h4_match = re.search(r"<h4[^>]*>(.*?)</h4>", li_content, re.DOTALL | re.IGNORECASE)
         data = _clean_html_text(h4_match.group(1)) if h4_match else None
 
         # Testo da <div class="info-text...">
@@ -152,9 +150,7 @@ def parse_infomobilita_rss(html_text: str) -> list[InfomobilitaNews]:
 
         # Cerca link treno se presente
         link_treno: dict[str, Any] | None = None
-        treno_link_match = re.search(
-            r'href=["\']([^"\']*cercaTreno\.jsp\?[^"\']+)["\']', body_html
-        )
+        treno_link_match = re.search(r'href=["\']([^"\']*cercaTreno\.jsp\?[^"\']+)["\']', body_html)
         if treno_link_match:
             raw_url = html.unescape(treno_link_match.group(1))
             parsed = urlparse(raw_url)
@@ -192,9 +188,7 @@ def parse_infomobilita_rss_box(html_text: str) -> list[InfomobilitaNewsHeadline]
 def parse_infomobilita_ticker(html_text: str) -> list[str]:
     """Parsa gli elementi del ticker scorrevole (infomobilitaTicker)."""
     items: list[str] = []
-    for li_text in re.findall(
-        r"<li[^>]*>(.*?)</li>", html_text, re.DOTALL | re.IGNORECASE
-    ):
+    for li_text in re.findall(r"<li[^>]*>(.*?)</li>", html_text, re.DOTALL | re.IGNORECASE):
         cleaned = _clean_html_text(li_text)
         if cleaned:
             items.append(cleaned)

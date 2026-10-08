@@ -4,8 +4,7 @@
 """Test unitari per ViaggiaTrenoClient."""
 
 import pytest
-
-from viaggiatreno_mcp.api.client import ViaggiaTrenoClient
+from viaggiatreno import ViaggiaTrenoClient
 
 
 @pytest.mark.asyncio
